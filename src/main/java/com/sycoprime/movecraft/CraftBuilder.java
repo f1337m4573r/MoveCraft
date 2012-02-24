@@ -175,7 +175,7 @@ public class CraftBuilder {
 
 	//detect and create an air bubble surrounding the player
 	private static boolean createAirBubble(){
-		MoveCraft.instance.DebugMessage("Adding an air bubble.", 4);
+		Central.debugMessage("Adding an air bubble.", 4);
 
 		BlockLoc block = blocksStack.pop();
 
@@ -294,7 +294,7 @@ public class CraftBuilder {
 
 			//detect all connected empty blocks
 			do{
-				if(!createAirBubble() && MoveCraft.instance.ConfigSetting("allowHoles").equalsIgnoreCase("false")){
+				if(!createAirBubble() && Central.configSetting("allowHoles").equalsIgnoreCase("false")){
 					craft.player.sendMessage(ChatColor.YELLOW + "This " + craft.type.name + " have holes, it needs to be waterproof");
 					return false;
 				}

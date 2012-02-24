@@ -22,30 +22,30 @@ public class CraftType {
 	public String name = "";
 	public String driveCommand = "pilot";
 
-	int minBlocks = 9;
-	int maxBlocks = 500;
-	int maxSpeed = 4;
+	public int minBlocks = 9;
+	public int maxBlocks = 500;
+	public int maxSpeed = 4;
 
-	int flyBlockType = 0;	//type of stone needed to make the vehicle fly
+	public int flyBlockType = 0;	//type of stone needed to make the vehicle fly
 	int digBlockId = 0;		//the type of block needed to make the vehicle able to drill through terrain
 	int engineBlockId = 0;		//the type of block used to detect engines
-	double flyBlockPercent = 0;		//percent of flystone needed to make it fly
+	public double flyBlockPercent = 0;		//percent of flystone needed to make it fly
 	double digBlockPercent = 0;
 	int digBlockDurability = 0;
-	int fuelItemId = 0;
+	public int fuelItemId = 0;
 	int fuelConsumptionMultiplier = 1;
 	
-	int remoteControllerItem = 0;
+	public int remoteControllerItem = 0;
 
-	boolean canFly = false;
-	boolean canNavigate = false;
-	boolean canDive = false;
-	boolean iceBreaker = false;
-	boolean bomber = false;
-	boolean canDig = false;
-	boolean obeysGravity = false;
-	boolean isTerrestrial = false;
-	boolean requiresRails = false;
+	public boolean canFly = false;
+	public boolean canNavigate = false;
+	public boolean canDive = false;
+	public boolean iceBreaker = false;
+	public boolean bomber = false;
+	public boolean canDig = false;
+	public boolean obeysGravity = false;
+	public boolean isTerrestrial = false;
+	public boolean requiresRails = false;
 
 	String sayOnControl = "You control the craft";
 	String sayOnRelease = "You release the craft";
@@ -57,20 +57,20 @@ public class CraftType {
 
 	public static ArrayList<CraftType> craftTypes = new ArrayList<CraftType>();
 	
-	boolean listenItem = true;
-	boolean listenAnimation, listenMovement = false;
+	public boolean listenItem = true;
+	public boolean listenAnimation, listenMovement = false;
 
 	public CraftType(String name) {
 		this.name = name;
 		
-		String[] bob = MoveCraft.instance.ConfigSetting("StructureBlocks").split(",");
+		String[] bob = Central.configSetting("StructureBlocks").split(",");
 		short[] juan = new short[bob.length + 1];
 		for(int i = 0; i < bob.length; i++)
 			juan[i] = Short.parseShort(bob[i]);
 		structureBlocks = juan;
 		
-		if(MoveCraft.instance.ConfigSetting("ForbiddenBlocks") != "null") {
-			bob = MoveCraft.instance.ConfigSetting("ForbiddenBlocks").split(",");
+		if(Central.configSetting("ForbiddenBlocks") != "null") {
+			bob = Central.configSetting("ForbiddenBlocks").split(",");
 			juan = new short[bob.length];
 			for(int i = 0; i < bob.length; i++) {
 				try {
@@ -524,8 +524,8 @@ public class CraftType {
 
 				CraftType craftType = new CraftType(craftName);
 				
-				craftType.remoteControllerItem = Integer.parseInt(MoveCraft.instance.ConfigSetting("UniversalRemoteId"));
-				craftType.engineBlockId = Integer.parseInt(MoveCraft.instance.ConfigSetting("EngineBlockId"));
+				craftType.remoteControllerItem = Integer.parseInt(Central.configSetting("UniversalRemoteId"));
+				craftType.engineBlockId = Integer.parseInt(Central.configSetting("EngineBlockId"));
 
 				try {
 					BufferedReader reader = new BufferedReader(new FileReader(
@@ -558,7 +558,7 @@ public class CraftType {
 			}
 		}
 
-		if(MoveCraft.instance.configFile.ConfigSettings.get("WriteDefaultCraft").equalsIgnoreCase("true"))
+		if(Central.getConfigManager().getConfigFile().ConfigSettings.get("WriteDefaultCraft").equalsIgnoreCase("true"))
 			loadDefaultCraftTypes();
 	}
 }

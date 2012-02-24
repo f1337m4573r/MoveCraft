@@ -11,7 +11,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
-import com.sycoprime.movecraft.events.MoveCraftTurnEvent;
 
 public class CraftRotator {
 	public Craft craft;
@@ -84,8 +83,8 @@ public class CraftRotator {
 		//Location pivot = this.getPivot().add(entOffset);
 		Location newPoint = point.clone();
 		//newPoint = point.subtract(pivot);// make point relative to pivot
-		MoveCraft.instance.DebugMessage("r " + r, 2);
-		MoveCraft.instance.DebugMessage("newPoint1 " + newPoint, 2);
+		Central.debugMessage("r " + r, 2);
+		Central.debugMessage("newPoint1 " + newPoint, 2);
 		double x, z;
 
 
@@ -144,7 +143,7 @@ public class CraftRotator {
 	public static int rotateX(int x, int z, int r){
 		/** get the corresponding world x coordinate */
 
-		MoveCraft.instance.DebugMessage("r is " + r +
+		Central.debugMessage("r is " + r +
 				", x is " + x +
 				", z is " + z, 4);
 
@@ -179,7 +178,7 @@ public class CraftRotator {
 			return;
 		}
 
-		if((id == 64 || id == 63) && MoveCraft.instance.DebugMode) {
+		if((id == 64 || id == 63) && Central.getDebugManager().isDebugMode()) {
 			System.out.println("This stack trace is totally expected.");
 			//Thread.currentThread().getStackTrace();
 			//new Throwable().getStackTrace();
@@ -286,12 +285,6 @@ public class CraftRotator {
 
 		dr = (dr + 360) % 360;
 
-		MoveCraftTurnEvent event = new MoveCraftTurnEvent(craft, dr);
-		MoveCraft.instance.getServer().getPluginManager().callEvent(event);
-		if (event.isCancelled()) {
-			 return;
-		}
-		dr = event.getDegrees();
 
 		ArrayList<Entity> craftEntities = craft.getCraftEntities();
 		HashMap<Entity, Location> entPreLoc = new HashMap<Entity, Location>();
@@ -309,7 +302,7 @@ public class CraftRotator {
 
 				if(e != craft.player)
 					entPreLoc.get(e).setYaw(entPreLoc.get(e).getYaw() + dr);
-				MoveCraft.instance.DebugMessage("teleporting " + entPreLoc.get(e), 2);
+				Central.debugMessage("teleporting " + entPreLoc.get(e), 2);
 
 				//e.teleport(entPreLoc.get(e));
 		}
@@ -509,9 +502,9 @@ public class CraftRotator {
 		int posX = craft.minX + craft.offX;
 		int posZ = craft.minZ + craft.offZ;
 
-		MoveCraft.instance.DebugMessage("Min vals start " + craft.minX + ", " + craft.minZ, 2);
+		Central.debugMessage("Min vals start " + craft.minX + ", " + craft.minZ, 2);
 
-		MoveCraft.instance.DebugMessage("Off was " + craft.offX + ", " + craft.offZ, 2);
+		Central.debugMessage("Off was " + craft.offX + ", " + craft.offZ, 2);
 
 		//rotate offset
 		//int newoffX = rotateX(craft.craft.offX, craft.craft.offZ, -dr % 360);
@@ -519,7 +512,7 @@ public class CraftRotator {
 		int newoffX = rotateX(craft.offX, craft.offZ, dr);
 		int newoffZ = rotateZ(craft.offX, craft.offZ, dr);
 
-		MoveCraft.instance.DebugMessage("New off is " + newoffX + ", " + newoffZ, 2);
+		Central.debugMessage("New off is " + newoffX + ", " + newoffZ, 2);
 
 		if(newoffX < 0)
 			newoffX = newSize.getBlockX() - 1 - Math.abs(newoffX);
@@ -529,7 +522,7 @@ public class CraftRotator {
 		craft.offX = newoffX;
 		craft.offZ = newoffZ;
 
-		MoveCraft.instance.DebugMessage("Off is " + craft.offX + ", " + craft.offZ, 2);
+		Central.debugMessage("Off is " + craft.offX + ", " + craft.offZ, 2);
 
 		//update min/max
 		craft.minX = posX - craft.offX;
@@ -537,7 +530,7 @@ public class CraftRotator {
 		craft.maxX = craft.minX + craft.sizeX -1;
 		craft.maxZ = craft.minZ + craft.sizeZ -1;
 
-		MoveCraft.instance.DebugMessage("Min vals end " + craft.minX + ", " + craft.minZ, 2);
+		Central.debugMessage("Min vals end " + craft.minX + ", " + craft.minZ, 2);
 
 		rotateCardinals(craft.dataBlocks, dr);
 		rotateCardinals(craft.complexBlocks, dr);
@@ -666,7 +659,7 @@ public class CraftRotator {
 			}
 
 			if(cardinals != null) {
-				MoveCraft.instance.DebugMessage(Material.getMaterial(blockId) +
+				Central.debugMessage(Material.getMaterial(blockId) +
 						" Cardinals are "
 						+ cardinals[0] + ", "
 						+ cardinals[1] + ", "
@@ -678,14 +671,14 @@ public class CraftRotator {
 					if(dataBlock.data == cardinals[i])
 						break;
 
-				MoveCraft.instance.DebugMessage("i starts as " + i + " which is " + cardinals[i], 2);
+				Central.debugMessage("i starts as " + i + " which is " + cardinals[i], 2);
 
 				i += (dr / 90);
 
 				if(i > 3)
 					i = i - 4;
 
-				MoveCraft.instance.DebugMessage("i ends as " + i + ", which is " + cardinals[i], 2);
+				Central.debugMessage("i ends as " + i + ", which is " + cardinals[i], 2);
 
 				dataBlock.data = cardinals[i];
 			}

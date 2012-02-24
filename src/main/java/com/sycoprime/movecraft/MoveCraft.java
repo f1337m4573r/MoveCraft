@@ -1,19 +1,16 @@
 package com.sycoprime.movecraft;
 
+import com.sycoprime.movecraft.listeners.BlockListener;
+import com.sycoprime.movecraft.listeners.PlayerListener;
 import java.util.logging.*;
-import java.io.File;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.PluginManager;
 
-import com.sycoprime.movecraft.config.ConfigFile;
 // disabled until I get a handle on the group perms -- dlmarti
 //import com.sycoprime.movecraft.plugins.PermissionInterface;
 
@@ -49,7 +46,8 @@ public class MoveCraft extends JavaPlugin {
         
 	public void onEnable() {
 		// getServer().getScheduler().scheduleSyncDelayedTask(this, loadSensors, 20*5); I really dont know what this is meant to do - AJCStriker
-
+                Central.getPluginServer().getPluginManager().registerEvents(new PlayerListener(), Central.getPluginInstance());
+                Central.getPluginServer().getPluginManager().registerEvents(new BlockListener(), Central.getPluginInstance());
 		BlocksInfo.loadBlocksInfo();
 		Central.getConfigManager().loadProperties();
 

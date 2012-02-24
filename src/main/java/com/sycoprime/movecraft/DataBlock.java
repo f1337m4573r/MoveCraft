@@ -3,11 +3,11 @@ package com.sycoprime.movecraft;
 import org.bukkit.inventory.ItemStack;
 
 public class DataBlock {
-	int id;
-	int x;
-	int y;
-	int z;
-	int data;
+	public int id;
+	public int x;
+	public int y;
+	public int z;
+	public int data;
 	public ItemStack[] items = new ItemStack[27];
 	public String[] signLines = new String[4];
 

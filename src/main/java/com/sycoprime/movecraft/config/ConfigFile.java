@@ -1,5 +1,6 @@
 package com.sycoprime.movecraft.config;
 
+import com.sycoprime.movecraft.Central;
 import java.util.HashMap;
 
 import org.bukkit.entity.Player;
@@ -55,7 +56,7 @@ public class ConfigFile {
 		ConfigComments.put("DisableHyperSpaceField", "Prevents the hyperspace field blocks from appearing.");
 		ConfigComments.put("RequireStick", "Requires the player use a stick to move");
 				
-		MoveCraft.instance.configFile = this;
+		Central.getConfigManager().setConfigFile(this);
 		
 		XMLHandler.load();
 		

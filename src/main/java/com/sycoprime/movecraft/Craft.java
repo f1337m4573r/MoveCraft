@@ -31,48 +31,48 @@ public class Craft {
 	public CraftType type;
 	public String name; // name, a different name can be set
 
-	short matrix[][][];
-	ArrayList<DataBlock> dataBlocks;
+	public short matrix[][][];
+	public ArrayList<DataBlock> dataBlocks;
 	//convert to LinkedList for preformance boost?
-	ArrayList<DataBlock> complexBlocks = new ArrayList<DataBlock>();
+	public ArrayList<DataBlock> complexBlocks = new ArrayList<DataBlock>();
 	//ArrayList<ArrayList<String>> signLines = new ArrayList<ArrayList<String>>();
 	
 	short displacedBlocks[][][];
 
 	// size of the craft
-	int sizeX, sizeZ, sizeY = 0;
+	public int sizeX, sizeZ, sizeY = 0;
 
 	// position of the craft on the map
 	World world;
 	//int posX, posY, posZ;
-	int centerX, centerZ = -1;
+	public int centerX, centerZ = -1;
 	
-	int blockCount = 0;
-	int flyBlockCount, digBlockCount = 0;
+	public int blockCount = 0;
+	public int flyBlockCount, digBlockCount = 0;
 
 	int maxBlocks;
 
-	int waterLevel = -1;
-	int newWaterLevel = -1; // new detected waterlevel when moving
+	public int waterLevel = -1;
+	public int newWaterLevel = -1; // new detected waterlevel when moving
 
-	short waterType = 0; // water or lava
+	public short waterType = 0; // water or lava
 
-	int minX, maxX, minY, maxY, minZ, maxZ = 0;
+	public int minX, maxX, minY, maxY, minZ, maxZ = 0;
 
 	public Player player;
 
-	int speed = 1;
+	public int speed = 1;
 
-	long lastMove = System.currentTimeMillis(); // record time of the last arm
+	public long lastMove = System.currentTimeMillis(); // record time of the last arm
 	// swing
-	boolean haveControl = true; // if the player have the control of the craft
+	public boolean haveControl = true; // if the player have the control of the craft
 	boolean isOnBoard = true; // if the player is on board
 	String customName = null;
 
 	boolean blockPlaced = false;
 	
 	/* Rotation */
-	int rotation = 0;
+	public int rotation = 0;
 	int offX, offZ = 0;
 	/* End Rotation */
 
@@ -84,11 +84,11 @@ public class Craft {
 	public int currentWayPoint = 0;
 	public boolean StopRequested = false;
 	public Block railBlock;
-	int remainingFuel = 0;
+	public int remainingFuel = 0;
 	int asyncTaskId = 0;
 
 	// Added engine block to test having blocks that propel the craft
-	ArrayList<DataBlock> engineBlocks = new ArrayList<DataBlock>();
+	public ArrayList<DataBlock> engineBlocks = new ArrayList<DataBlock>();
 
 	Craft(CraftType type, Player player, String customName, float Rotation) {
 		if(Rotation > 45 && Rotation < 135)
@@ -138,7 +138,7 @@ public class Craft {
 
 	// add a block to the craft, if it is connected to a craft block
 	public void addBlock(Block block) {
-		MoveCraft.instance.DebugMessage("Adding a block...", 4);
+		Central.debugMessage("Adding a block...", 4);
 
 		// to craft coordinates
 		int x = block.getX() - minX;
@@ -196,11 +196,11 @@ public class Craft {
 		&& z >= minZ && z <= maxZ;
 	}
 
-	static void addCraft(Craft craft) {
+	public static void addCraft(Craft craft) {
 		craftList.add(craft);
 	}
 
-	static void removeCraft(Craft craft) {
+	public static void removeCraft(Craft craft) {
 		if(craft.timer != null)
 			craft.timer.Destroy();
 		craftList.remove(craft);
@@ -339,7 +339,7 @@ public class Craft {
 
 		// vertical limit
 		if (minY + dy < 0 || maxY + dy > 128) {
-			MoveCraft.instance.DebugMessage("Craft prevented from moving due to vertical limit.", 4);
+			Central.debugMessage("Craft prevented from moving due to vertical limit.", 4);
 			return false;
 		}
 
@@ -356,7 +356,7 @@ public class Craft {
 					&& !canGoThrough(0, targetBlock1.getTypeId(), 0)
 					|| !isCraftBlock(X - minX, Y + 1 - minY, Z - minZ)
 					&& !canGoThrough(0, targetBlock2.getTypeId(), 0)) {
-				MoveCraft.instance.DebugMessage("Craft prevented from because...can't go through?", 4);
+				Central.debugMessage("Craft prevented from because...can't go through?", 4);
 				return false;
 			}
 		}
@@ -396,7 +396,7 @@ public class Craft {
 							}
 						
 						if (!canGoThrough(matrix[x][y][z], blockId, blockData) ) {
-							MoveCraft.instance.DebugMessage("Craft prevented from moving because can't go through.", 4);
+							Central.debugMessage("Craft prevented from moving because can't go through.", 4);
 							return false;
 						}
 						
@@ -420,7 +420,7 @@ public class Craft {
 					world.loadChunk(checkChunk);
 				}
 				catch (Exception ex) {
-					MoveCraft.instance.DebugMessage("Craft prevented from moving because destination chunk is not loaded.", 3);
+					Central.debugMessage("Craft prevented from moving because destination chunk is not loaded.", 3);
 					return false;
 				}
 			}
@@ -708,4 +708,22 @@ public class Craft {
 			}
 		}		
 	}
+
+    public void setHaveControl(boolean haveControl) {
+        this.haveControl = haveControl;
+    }
+
+    public void setIsOnBoard(boolean isOnBoard) {
+        this.isOnBoard = isOnBoard;
+    }
+
+    public boolean isIsOnBoard() {
+        return isOnBoard;
+    }
+
+    public boolean isHaveControl() {
+        return haveControl;
+    }
+        
+    
 }

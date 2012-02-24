@@ -67,7 +67,7 @@ public class Craft_Hyperspace {
 	}
 	
 	public static void surroundCraft(Craft craft, Boolean fieldOn) {
-		if(MoveCraft.instance.ConfigSetting("DisableHyperSpaceField").equalsIgnoreCase("true")) {
+		if(Central.configSetting("DisableHyperSpaceField").equalsIgnoreCase("true")) {
 			return;
 		}
 		

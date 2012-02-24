@@ -1,6 +1,6 @@
 package com.sycoprime.movecraft.plugins;
 
-import com.sycoprime.movecraft.MoveCraft;
+import com.sycoprime.movecraft.Central;
 
 import org.bukkit.entity.Player;
 
@@ -12,17 +12,17 @@ public class PermissionInterface {
 	
 	public static boolean CheckPermission(Player player, String command) {		
 		command = command.replace(" ", ".");
-		MoveCraft.instance.DebugMessage("Checking if " + player.getName() + " can " + command, 3);
+		Central.debugMessage("Checking if " + player.getName() + " can " + command, 3);
 		
-		if(MoveCraft.instance.ConfigSetting("RequireOp").equalsIgnoreCase("true") && !player.isOp()) {
-				MoveCraft.instance.DebugMessage("Op is required, and " + player.getDisplayName() + " doesn't have it.", 4);
+		if(Central.configSetting("RequireOp").equalsIgnoreCase("true") && !player.isOp()) {
+				Central.debugMessage("Op is required, and " + player.getDisplayName() + " doesn't have it.", 4);
 				return false;
 		}
 				
 		else if(player.hasPermission(command) || player.isOp()) {
-			MoveCraft.instance.DebugMessage("Player has permissions: " + 
+			Central.debugMessage("Player has permissions: " + 
 					player.hasPermission(command), 3);
-	    	MoveCraft.instance.DebugMessage("Player isop: " + 
+	    	Central.debugMessage("Player isop: " + 
 		    			player.isOp(), 3);
 		    	return true;
 		    }

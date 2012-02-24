@@ -47,7 +47,7 @@ public class Benchmarker {
 			fileName = "MoveCraft-BenchMark.txt";
 		}
 		
-		File benchmarkFile = new File(MoveCraft.instance.getDataFolder(), fileName);
+		File benchmarkFile = new File(Central.getPluginInstance().getDataFolder(), fileName);
 		if (!benchmarkFile.exists()) {
 			return;
 		}

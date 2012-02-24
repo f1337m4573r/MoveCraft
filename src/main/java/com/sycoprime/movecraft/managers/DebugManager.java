@@ -11,7 +11,7 @@ import com.sycoprime.movecraft.Central;
  * @author alexanderchristie
  */
 public class DebugManager {
-    private boolean debugMode = false;
+    private boolean debugMode = true;
     
     private DebugManager() {
     }

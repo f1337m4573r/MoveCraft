@@ -66,7 +66,7 @@ public class MoveCraft_Timer {
 			if(state.equals("abandonCheck")) {
 			*/				
 				if(craft != null) {
-					MoveCraft.instance.releaseCraft(craft.player, craft);
+					Central.getPluginInstance().releaseCraft(craft.player, craft);
 				}
 				timer.cancel();
 				return;

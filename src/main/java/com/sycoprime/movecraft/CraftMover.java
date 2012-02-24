@@ -16,7 +16,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import com.sycoprime.movecraft.events.MoveCraftMoveEvent;
 
 public class CraftMover {
 	private Craft craft;
@@ -43,11 +42,11 @@ public class CraftMover {
 		*/
 		
 		if(block.getTypeId() == id) {
-			MoveCraft.instance.DebugMessage("Tried to change a " + id + " to itself.", 5);
+			Central.debugMessage("Tried to change a " + id + " to itself.", 5);
 			return;
 		}
 		
-		MoveCraft.instance.DebugMessage("Attempting to set block at " + block.getX() + ", "
+		Central.debugMessage("Attempting to set block at " + block.getX() + ", "
 				 + block.getY() + ", " + block.getZ() + " to " + id, 5);
 		
 		if (block.setTypeId(id) == false) {
@@ -115,14 +114,14 @@ public class CraftMover {
 			
 			if(inventory != null) {
 				complexBlock.items = new ItemStack[27];
-				MoveCraft.instance.DebugMessage("Inventory is " + inventory.getSize(), 4);
+				Central.debugMessage("Inventory is " + inventory.getSize(), 4);
 				for(int slot = 0; slot < inventory.getSize(); slot++) {
 					if(inventory.getItem(slot).getTypeId() != 0 && inventory.getItem(slot) != null) {
 						//complexBlock.setItem(slot, inventory.getItem(slot).getTypeId(), inventory.getItem(slot).getAmount());
 						complexBlock.setItem(slot, inventory.getItem(slot));
 						//inventory.setItem(slot, new ItemStack(0));
 
-						MoveCraft.instance.DebugMessage("Inventory has " + inventory.getItem(slot).getAmount() + 
+						Central.debugMessage("Inventory has " + inventory.getItem(slot).getAmount() + 
 								" inventory item of type " + inventory.getItem(slot).getTypeId() + 
 								" in slot " + slot, 4);
 						
@@ -168,7 +167,7 @@ public class CraftMover {
 			inventory = null;
 
 			if (complexBlock.id == 63 || complexBlock.id == 68) {
-				MoveCraft.instance.DebugMessage("Restoring a sign.", 4);
+				Central.debugMessage("Restoring a sign.", 4);
 				setBlock(complexBlock.id, theBlock);
 				//theBlock.setcraft.typeId(complexBlock.id);
 				theBlock.setData((byte) complexBlock.data);
@@ -197,7 +196,7 @@ public class CraftMover {
 				for(int slot = 0; slot < inventory.getSize(); slot++) {
 					if(complexBlock.items[slot] != null && complexBlock.items[slot].getTypeId() != 0) {
 						inventory.setItem(slot, complexBlock.items[slot]);
-						MoveCraft.instance.DebugMessage("Moving " + complexBlock.items[slot].getAmount() + 
+						Central.debugMessage("Moving " + complexBlock.items[slot].getAmount() + 
 								" inventory item of type " + complexBlock.items[slot].getTypeId() + 
 								" in slot " + slot, 4);
 					}
@@ -212,7 +211,7 @@ public class CraftMover {
 
 
 	public void calculatedMove(int dx, int dy, int dz) {
-		MoveCraft.instance.DebugMessage("DXYZ is (" + dx + ", " + dy + ", " + dz + ")", 4);
+		Central.debugMessage("DXYZ is (" + dx + ", " + dy + ", " + dz + ")", 4);
 		//instead of forcing the craft to move, check some things beforehand
 
 		if(craft.inHyperSpace) {
@@ -286,7 +285,7 @@ public class CraftMover {
 			
 			//If the MoveCraft.instance is configured for async movement, it will be used
 			//However, using this, if the craft hasn't finished moving before, it won't continue to move...
-			if(!MoveCraft.instance.ConfigSetting("EnableAsyncMovement").equalsIgnoreCase("true"))
+			if(!Central.configSetting("EnableAsyncMovement").equalsIgnoreCase("true"))
 				move(dx, dy, dz);
 			else
 				AsyncMove(dx, dy, dz);
@@ -299,23 +298,15 @@ public class CraftMover {
 	// move the craft according to a vector d
 	public void move(int dx, int dy, int dz) {
 		//if(craft.type.canDig) {
-		MoveCraft.instance.DebugMessage("craft.waterLevel is " + craft.waterLevel, 4);
-		MoveCraft.instance.DebugMessage("craft.waterType is " + craft.waterType, 4);
-		MoveCraft.instance.DebugMessage("newcraft.waterLevel is " + craft.newWaterLevel, 4);
+		Central.debugMessage("craft.waterLevel is " + craft.waterLevel, 4);
+		Central.debugMessage("craft.waterType is " + craft.waterType, 4);
+		Central.debugMessage("newcraft.waterLevel is " + craft.newWaterLevel, 4);
 		//}
 
 		dx = craft.speed * dx;
 		dz = craft.speed * dz;
 
-		MoveCraftMoveEvent event = new MoveCraftMoveEvent(craft, dx, dy, dz);
-		MoveCraft.instance.getServer().getPluginManager().callEvent(event);   
-
-		if (event.isCancelled()) {
-			return;
-		}
-		dx = (int) event.getMovement().getX();
-		dy = (int) event.getMovement().getY();
-		dz = (int) event.getMovement().getZ();
+		
 
 		if(craft.type.canDig)
 			craft.waterLevel = craft.newWaterLevel;
@@ -394,7 +385,7 @@ public class CraftMover {
 
 						//drop the item corresponding to the block if it is not a craft block
 						if(!craft.isCraftBlock(dx + x,dy + y, dz + z)) {
-							MoveCraft.instance.dropItem(innerBlock);
+							Central.getPluginInstance().dropItem(innerBlock);
 						}
 
 						if(craft.type.digBlockDurability > 0) { //break drill bits
@@ -402,11 +393,11 @@ public class CraftMover {
 							int num = ( (new Random()).nextInt( Math.abs( blockDurability - 0 ) + 1 ) ) + 0;
 
 							if(num == 1) {
-								MoveCraft.instance.DebugMessage("Random = 1", 1);
+								Central.debugMessage("Random = 1", 1);
 								continue;
 							}
 							else
-								MoveCraft.instance.DebugMessage("Random number = " + Integer.toString(num), 1);
+								Central.debugMessage("Random number = " + Integer.toString(num), 1);
 						}
 
 						// inside the craft, the block is different
@@ -438,7 +429,7 @@ public class CraftMover {
 		
 		for(Entity e : checkEntities) {
 			//if(craft.isOnCraft(e, false)) {
-				if(MoveCraft.instance.ConfigSetting("TryNudge").equalsIgnoreCase("true") &&
+				if(Central.configSetting("TryNudge").equalsIgnoreCase("true") &&
 						(craft.type.listenMovement == false || e != craft.player) ) {
 					movePlayer(e, dx, dy, dz);
 				} else {
@@ -513,7 +504,7 @@ public class CraftMover {
 								craft.matrix[x][y][z] = -1; // make a hole in the craft
 
 							craft.blockCount--;
-							MoveCraft.instance.DebugMessage("Removing a block of type " + craftBlockId + 
+							Central.debugMessage("Removing a block of type " + craftBlockId + 
 									" because of type " + blockId, 4);
 						}
 					}
@@ -581,7 +572,7 @@ public class CraftMover {
 	}
 	
 	public void teleportPlayer(Entity p, int dx, int dy, int dz) {
-		MoveCraft.instance.DebugMessage("Teleporting entity " + p.getEntityId(), 4);
+		Central.debugMessage("Teleporting entity " + p.getEntityId(), 4);
 		Location pLoc = p.getLocation();
 		pLoc.setWorld(craft.world);
 		pLoc.setX(pLoc.getX() + dx);
@@ -591,7 +582,7 @@ public class CraftMover {
 	}
 	
 	public void movePlayer(Entity p, int dx, int dy, int dz) {
-		MoveCraft.instance.DebugMessage("Moving player", 4);
+		Central.debugMessage("Moving player", 4);
 		int mccraftspeed = craft.speed;
 		if(mccraftspeed > 2)
 			mccraftspeed = 2;
@@ -625,7 +616,7 @@ public class CraftMover {
 	}
 	
 	public boolean AsyncMove(int dx, int dy, int dz) {
-		if(MoveCraft.instance.getServer().getScheduler().isCurrentlyRunning(craft.asyncTaskId))
+		if(Central.getPluginServer().getScheduler().isCurrentlyRunning(craft.asyncTaskId))
 			return false;
 		
 		final int changeX = dx; 
@@ -638,7 +629,7 @@ public class CraftMover {
 			}
 		};
 		
-		craft.asyncTaskId = MoveCraft.instance.getServer().getScheduler().scheduleAsyncDelayedTask(MoveCraft.instance, r);
+		craft.asyncTaskId = Central.getPluginServer().getScheduler().scheduleAsyncDelayedTask(Central.getPluginInstance(), r);
 		return true;
 	}
 	

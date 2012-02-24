@@ -1,5 +1,6 @@
 package com.sycoprime.movecraft.config;
 
+import com.sycoprime.movecraft.Central;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -43,7 +44,7 @@ public class INIHandler {
 
 				String[] split = line.split("=");
 
-				MoveCraft.instance.configFile.ConfigSettings.put(split[0], split[1]);
+				Central.getConfigManager().getConfigFile().ConfigSettings.put(split[0], split[1]);
 			}
 			in.close();
 		}
@@ -55,9 +56,9 @@ public class INIHandler {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(MCConfig));
 
-			for(Object configLine : MoveCraft.instance.configFile.ConfigSettings.keySet().toArray()) {
+			for(Object configLine : Central.getConfigManager().getConfigFile().ConfigSettings.keySet().toArray()) {
 				String configKey = (String) configLine;
-				bw.write(configKey + "=" + MoveCraft.instance.configFile.ConfigSettings.get(configKey) + System.getProperty("line.separator"));
+				bw.write(configKey + "=" + Central.getConfigManager().getConfigFile().ConfigSettings.get(configKey) + System.getProperty("line.separator"));
 			}
 			bw.close();
 		}

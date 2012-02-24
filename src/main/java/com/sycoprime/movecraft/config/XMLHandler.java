@@ -1,5 +1,6 @@
 package com.sycoprime.movecraft.config;
 
+import com.sycoprime.movecraft.Central;
 import java.io.File;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -24,11 +25,11 @@ import com.sycoprime.movecraft.MoveCraft;
 public class XMLHandler {	
 	
 	public static void load() {
-		File dir = MoveCraft.instance.getDataFolder();
+		File dir = Central.getPluginInstance().getDataFolder();
 		if (!dir.exists())
 			dir.mkdir();
 		
-		File config = new File(MoveCraft.instance.getDataFolder(), MoveCraft.instance.configFile.filename);
+		File config = new File(Central.getPluginInstance().getDataFolder(), Central.getConfigManager().getConfigFile().filename);
 		if (!config.exists()) {
 			return;
 		}
@@ -41,14 +42,14 @@ public class XMLHandler {
 			
 			NodeList list;
 			
-			for(Object configLine : MoveCraft.instance.configFile.ConfigSettings.keySet().toArray()) {
+			for(Object configLine :Central.getConfigManager().getConfigFile().ConfigSettings.keySet().toArray()) {
 				String configKey = (String) configLine;
 
 				list = doc.getElementsByTagName(configKey);
 				
 				try {
 					String value = list.item(0).getChildNodes().item(0).getNodeValue();
-					MoveCraft.instance.configFile.ConfigSettings.put(configKey, value);
+					Central.getConfigManager().getConfigFile().ConfigSettings.put(configKey, value);
 				} catch (Exception ex){
 	
 				}
@@ -60,11 +61,11 @@ public class XMLHandler {
 	}
 	
 	public static void save() {		
-		File dir = MoveCraft.instance.getDataFolder();
+		File dir = Central.getPluginInstance().getDataFolder();
 		if (!dir.exists())
 			dir.mkdir();
 
-		File configuration = new File(MoveCraft.instance.getDataFolder(), MoveCraft.instance.configFile.filename);
+		File configuration = new File(Central.getPluginInstance().getDataFolder(),Central.getConfigManager().getConfigFile().filename);
 		//test if filename contains ".xml", if not, freak out a little
 
 		Element setting = null;
@@ -78,14 +79,14 @@ public class XMLHandler {
 			Element rootElement = doc.createElement("MoveCraft-Configuration");
 			doc.appendChild(rootElement);
 
-			for(Object configLine : MoveCraft.instance.configFile.ConfigSettings.keySet().toArray()) {				
+			for(Object configLine : Central.getConfigManager().getConfigFile().ConfigSettings.keySet().toArray()) {				
 				String configKey = (String) configLine;
 				setting = doc.createElement(configKey);
-				setting.appendChild(doc.createTextNode(MoveCraft.instance.configFile.ConfigSettings.get(configKey)));
+				setting.appendChild(doc.createTextNode(Central.getConfigManager().getConfigFile().ConfigSettings.get(configKey)));
 				rootElement.appendChild(setting);
 
-				if(MoveCraft.instance.configFile.ConfigComments.containsKey(configKey)) {
-					Comment comment = doc.createComment(MoveCraft.instance.configFile.ConfigComments.get(configKey));
+				if(Central.getConfigManager().getConfigFile().ConfigComments.containsKey(configKey)) {
+					Comment comment = doc.createComment(Central.getConfigManager().getConfigFile().ConfigComments.get(configKey));
 					rootElement.insertBefore(comment,setting);
 				}
 			}

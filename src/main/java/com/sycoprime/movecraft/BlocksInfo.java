@@ -158,7 +158,7 @@ public class BlocksInfo {
 
 	public static boolean isDataBlock(int blockId) {
 		if(blockId != -1 && blocks[blockId] == null) {
-			MoveCraft.instance.DebugMessage("blocks(" + blockId + " is null!", 0);
+			Central.debugMessage("blocks(" + blockId + " is null!", 0);
 			return false;
 		}
 

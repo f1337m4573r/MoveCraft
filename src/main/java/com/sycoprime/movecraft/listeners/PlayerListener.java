@@ -185,7 +185,6 @@ public class PlayerListener implements Listener{
 	}
 	
 	public void playerUsedAnItem(Player player, Craft craft) {
-                System.out.print("Here");
 		// minimum time between 2 swings
 		if (System.currentTimeMillis() - craft.lastMove < 0.2 * 1000)
 			return;
@@ -302,7 +301,7 @@ public class PlayerListener implements Listener{
 					CraftRotator cr = new CraftRotator(craft);
 					cr.turn(dr);
 				} else */  
-                                        System.out.println("Final");
+                                        
 					CraftMover cm = new CraftMover(craft);
 					cm.calculatedMove(dx, dy, dz);
 				
@@ -327,7 +326,6 @@ public class PlayerListener implements Listener{
 		String[] split = event.getMessage().split(" ");
 		split[0] = split[0].substring(1);
                 
-                System.out.println("Called");
 		//debug commands
 		if(Central.getDebugManager().isDebugMode()){
 			if (split[0].equalsIgnoreCase("isDataBlock")) {

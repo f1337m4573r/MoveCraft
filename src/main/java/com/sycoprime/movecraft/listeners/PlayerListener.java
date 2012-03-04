@@ -312,7 +312,6 @@ public class PlayerListener implements Listener{
 		if(event.getAnimationType() == PlayerAnimationType.ARM_SWING) {
 			Player player = event.getPlayer();
 			Craft craft = Craft.getCraft(player);
-                        System.out.println("Called 2");
 			if(craft != null && craft.type.listenAnimation == true) {
 				playerUsedAnItem(player, craft);			
 			}

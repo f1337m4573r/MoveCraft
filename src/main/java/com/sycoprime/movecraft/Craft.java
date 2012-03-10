@@ -338,7 +338,7 @@ public class Craft {
 		}
 
 		// vertical limit
-		if (minY + dy < 0 || maxY + dy > 128) {
+		if (minY + dy < 0 || maxY + dy >= world.getMaxHeight()) {
 			Central.debugMessage("Craft prevented from moving due to vertical limit.", 4);
 			return false;
 		}

@@ -11,7 +11,7 @@ public class Central {
     }
     
     public static String getVersion(){
-        return "V 8.0 Alpha";
+        return "Jenkins Test";
     }
     
     public static String getPluginName(){
